@@ -42,4 +42,10 @@ The CSV is expected to include at least:
 uv run python main.py
 ```
 
-Current script behavior reads `Discover-Statement-20260704.csv` by default.
+By default, the script reads the most recently modified `*.csv` in the repo root, excluding `reconciliation_report.csv`.
+
+To provide a specific statement file:
+
+```bash
+uv run python main.py cc_statement.csv
+```

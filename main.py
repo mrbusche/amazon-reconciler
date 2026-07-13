@@ -88,6 +88,24 @@ def load_statement(csv_path):
     return df[amazon_mask].copy()
 
 
+def resolve_statement_path(path_arg):
+    """Resolves statement CSV from CLI arg or newest repo CSV (excluding generated report)."""
+    if path_arg:
+        csv_path = Path(path_arg).expanduser()
+        if not csv_path.is_absolute():
+            csv_path = Path.cwd() / csv_path
+        if not csv_path.exists():
+            raise FileNotFoundError(f'Statement file not found: {csv_path}')
+        return csv_path
+
+    repo_root = Path(__file__).resolve().parent
+    candidates = [p for p in repo_root.glob('*.csv') if p.name.lower() != 'reconciliation_report.csv']
+    if not candidates:
+        raise FileNotFoundError('No statement CSV found in repo root. Provide a filename or add a CSV file.')
+
+    return max(candidates, key=lambda p: p.stat().st_mtime)
+
+
 def reconcile(statement_df, amazon_df, date_tolerance_days=4):
     """Compares statement charges against Amazon charge-level transactions."""
     print('[*] Reconciling statements against order history...')
@@ -175,7 +193,13 @@ if __name__ == '__main__':
     load_dotenv()
 
     parser = argparse.ArgumentParser(description='Reconcile credit card statement vs Amazon Orders.')
-    parser.path = 'Discover-Statement-20260704.csv'
+    parser.add_argument(
+        'statement_csv',
+        nargs='?',
+        help='Path to statement CSV. If omitted, uses newest CSV in repo root excluding reconciliation_report.csv.',
+    )
+    args = parser.parse_args()
+    statement_path = resolve_statement_path(args.statement_csv)
 
     email = os.getenv('AMAZON_USERNAME')
     password = os.getenv('AMAZON_PASSWORD')
@@ -183,7 +207,7 @@ if __name__ == '__main__':
         raise ValueError('Missing AMAZON_USERNAME or AMAZON_PASSWORD. Set them in your environment or .env file.')
 
     # 1. Load statement
-    card_df = load_statement(parser.path)
+    card_df = load_statement(statement_path)
     if card_df.empty:
         print('[*] No Amazon-related rows found in statement. Writing empty reconciliation report.')
         report = pd.DataFrame(columns=REPORT_COLUMNS)
