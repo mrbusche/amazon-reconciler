@@ -1,0 +1,21 @@
+[project]
+name = "amazon-reconciler"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas==3.0.3",
+    "amazon-orders[browser]==4.4.4",
+    "ruff==0.15.21",
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
