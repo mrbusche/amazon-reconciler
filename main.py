@@ -1,5 +1,6 @@
 import os
 import argparse
+import shutil
 from pathlib import Path
 import pandas as pd
 from datetime import timedelta
@@ -99,11 +100,37 @@ def resolve_statement_path(path_arg):
         return csv_path
 
     repo_root = Path(__file__).resolve().parent
+    synced_recent_activity = sync_latest_recent_activity(repo_root)
+    if synced_recent_activity is not None:
+        return synced_recent_activity
+
     candidates = [p for p in repo_root.glob('*.csv') if p.name.lower() != 'reconciliation_report.csv']
     if not candidates:
         raise FileNotFoundError('No statement CSV found in repo root. Provide a filename or add a CSV file.')
 
     return max(candidates, key=lambda p: p.stat().st_mtime)
+
+
+def sync_latest_recent_activity(repo_root):
+    """Copies newest Discover-Statement CSV from Downloads into repo root."""
+    downloads_dir = Path.home() / 'Downloads'
+    candidates = sorted(
+        downloads_dir.glob('Discover-Statement-*'),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    if not candidates:
+        return None
+
+    latest = candidates[0]
+    for existing in repo_root.glob('Discover-Statement-*'):
+        if existing.name != latest.name:
+            existing.unlink(missing_ok=True)
+
+    destination = repo_root / latest.name
+    shutil.copy2(latest, destination)
+    print(f'[*] Synced latest Discover activity file: {destination.name}')
+    return destination
 
 
 def reconcile(statement_df, amazon_df, date_tolerance_days=4):
