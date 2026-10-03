@@ -1,10 +1,28 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:recommended"],
+  "timezone": "America/Chicago",
+  "schedule": ["on friday after 9am and before 5pm"],
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "enabled": true
+    },
+    {
+      "matchManagers": ["nvm"],
+      "matchFileNames": [".nvmrc"],
+      "enabled": true
+    },
+    {
+      "matchManagers": ["pep621", "pip_requirements"],
+      "enabled": true
+    },
+    {
+      "matchUpdateTypes": ["major", "minor", "patch", "pin", "digest"],
+      "groupName": "all dependencies",
+      "groupSlug": "all"
+    }
   ],
-  "assignees": [
-    "@mrbusche"
-  ],
+  "assignees": ["@mrbusche"],
   "ignoreUnstable": false
 }
