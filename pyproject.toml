@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["pandas>=3.1.1", "amazon-orders[browser]==5.2.1", "ruff>=0.17.4"]
+dependencies = ["pandas>=3.1.1", "amazon-orders[browser]==5.4.1", "ruff>=0.17.4"]
 
 [tool.ruff]
 line-length = 120

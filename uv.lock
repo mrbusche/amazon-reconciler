@@ -8,10 +8,33 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "amazon-orders"
-version = "5.2.1"
+name = "amazon-auth"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "beautifulsoup4" },
+    { name = "click" },
+    { name = "pillow" },
+    { name = "pyotp" },
+    { name = "pyyaml" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/76/79/9b95f07860ae8575bd39659cca839e231984fc43b10e7ad3209d5fabbae5/amazon_auth-1.1.0.tar.gz", hash = "sha256:d2bc77702b1e4f6a6cc5f6a2a14b2e84cd7ecba48737c1f9de50ee6c087e7c8b", size = 63004, upload-time = "2026-11-11T22:33:57.738Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/e4/c2f655852a56cd14adefb3be46a846152d6371d881b2ac0af2524d639333/amazon_auth-1.1.0-py3-none-any.whl", hash = "sha256:fecf10d4f523ad051c55c7c4445f0ac5800fa0e4e67d0415a70889ea3738e234", size = 54551, upload-time = "2026-11-11T22:33:56.114Z" },
+]
+
+[package.optional-dependencies]
+browser = [
+    { name = "playwright" },
+]
+
+[[package]]
+name = "amazon-orders"
+version = "5.4.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "amazon-auth" },
     { name = "beautifulsoup4" },
     { name = "click" },
     { name = "pillow" },
@@ -20,14 +43,14 @@ dependencies = [
     { name = "pyyaml" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d5/5b/c185756b0750d61e0090e4a2539ec146b3951e07057bc02201839dfbd489/amazon_orders-5.2.1.tar.gz", hash = "sha256:78ccb63498a56df8e5c42d630a9d34d2228ab9d3186fb6cfdae8e8f061edfe3b", size = 112635, upload-time = "2026-10-31T17:22:40.175Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9d/4f/a9b584a2b601ad1e377fa7e224cc144ed38cc413790f1005ea71a935cdbc/amazon_orders-5.4.1.tar.gz", hash = "sha256:49534a5d3d81b208ee8b89287e882fcf86b45824e8b054b78f4bc3eb6512e5f5", size = 81803, upload-time = "2026-11-11T18:37:34.984Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/be/7a/6a19a8c2f01fe1c24b5facea084442077c39ea9431eab7c7abb6e665ecc9/amazon_orders-5.2.1-py3-none-any.whl", hash = "sha256:b4808d3f4245f3ab98dc7567419bc125bd9f49c014f6eab34030d6469e0b0ea7", size = 118186, upload-time = "2026-10-31T17:22:38.953Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/98/2b5b3d257094439bd3c885f1945ff46d2eb5e1f21fbfafd5505e330f12fa/amazon_orders-5.4.1-py3-none-any.whl", hash = "sha256:95a3224c683af9d069926effb459b7067694e3e97b108ced0238c8af127a9012", size = 83464, upload-time = "2026-11-11T18:37:33.418Z" },
 ]
 
 [package.optional-dependencies]
 browser = [
-    { name = "playwright" },
+    { name = "amazon-auth", extra = ["browser"] },
 ]
 
 [[package]]
@@ -42,7 +65,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "amazon-orders", extras = ["browser"], specifier = "==5.2.1" },
+    { name = "amazon-orders", extras = ["browser"], specifier = "==5.4.1" },
     { name = "pandas", specifier = ">=3.1.1" },
     { name = "ruff", specifier = ">=0.17.4" },
 ]
